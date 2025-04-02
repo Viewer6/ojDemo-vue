@@ -12,21 +12,40 @@
             <div class="form-box">
                 <div class="form-item">
                     <img src="../assets/images/shouji.png">
-                    <el-input placeholder="请输⼊账号" />
+                    <el-input v-model="userAccount" placeholder="请输⼊账号" />
                 </div>
                 <div class="form-item">
                     <img src="../assets/images/yanzhengma.png">
-                    <el-input placeholder="请输⼊密码" />
+                    <el-input v-model="password" placeholder="请输⼊密码" />
                 </div>
-                <div class="submit-box">
+                <div class="submit-box" @click="loginFun">
                     登录
                 </div>
             </div>
         </div>
     </div>
 </template>
+
+
 <script setup>
+import { ref } from 'vue';
+import { loginService } from '@/apis/suser';
+
+const userAccount = ref('');
+const password = ref('');
+
+function loginFun(){
+    loginService(userAccount.value, password.value)
+    .then(response => console.log("登录成功:", response))
+    .catch(error => console.error("登录失败:", error));
+}
+
+// setTimeout(() =>{
+// console.log("用户名: " + userAccount.value + ";密码: " + password.value)
+// }, 5000)
 </script>
+
+
 <style lang="scss" scoped>
 .login-page {
     width: 100vw;

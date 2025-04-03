@@ -30,14 +30,23 @@
 <script setup>
 import { ref } from 'vue';
 import { loginService } from '@/apis/suser';
+import router from '@/router';
 
 const userAccount = ref('');
 const password = ref('');
 
-function loginFun(){
-    loginService(userAccount.value, password.value)
-    .then(response => console.log("登录成功:", response))
-    .catch(error => console.error("登录失败:", error));
+async function loginFun(){
+    const loginResult = await loginService(userAccount.value, password.value);
+    // console.log(loginResult)
+    // console.log(loginResult.data)
+    // loginResult.then(console.log("登陆成功"));
+    if(loginResult.data.code == 1000){
+        console.log("登录成功");
+        router.push("/oj/system");
+    }else{
+        console.log("登录失败");
+    }
+
 }
 
 // setTimeout(() =>{

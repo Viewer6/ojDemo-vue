@@ -8,7 +8,12 @@ const router = createRouter({
             path: '/oj/login', 
             name: 'login', 
             component: () => import('../views/Login.vue')
-        }
+        },
+        {
+            path: '/oj/system', 
+            name: 'system', 
+            component: () => import('../views/System.vue')
+        },
     ]
 })
 

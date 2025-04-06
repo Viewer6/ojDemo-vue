@@ -16,7 +16,7 @@
                 </div>
                 <div class="form-item">
                     <img src="../assets/images/yanzhengma.png">
-                    <el-input v-model="password" placeholder="请输⼊密码" />
+                    <el-input v-model="password" type="password" placeholder="请输⼊密码" show-password />
                 </div>
                 <div class="submit-box" @click="loginFun">
                     登录
@@ -36,15 +36,12 @@ const userAccount = ref('');
 const password = ref('');
 
 async function loginFun(){
-    const loginResult = await loginService(userAccount.value, password.value);
-    // console.log(loginResult)
-    // console.log(loginResult.data)
-    // loginResult.then(console.log("登陆成功"));
-    if(loginResult.data.code == 1000){
-        console.log("登录成功");
+    try {
+        const loginResult = await loginService(userAccount.value, password.value);
+        console.log("登录成功: " + loginResult.data);
         router.push("/oj/system");
-    }else{
-        console.log("登录失败");
+    }catch (error) {
+        console.log("登录失败, " + error);
     }
 
 }

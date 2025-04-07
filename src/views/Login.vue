@@ -32,6 +32,7 @@ import { ref } from 'vue';
 import { loginService } from '@/apis/suser';
 import router from '@/router';
 import { setToken } from '@/utils/cookie';
+import { ElMessage } from 'element-plus';
 
 const userAccount = ref('');
 const password = ref('');
@@ -41,8 +42,9 @@ async function loginFun(){
         const loginResult = await loginService(userAccount.value, password.value);
         // console.log("登录成功: " + loginResult.data);
         setToken(loginResult.data);
-        router.push("/oj/system");
+        router.push("/oj/layout");
     }catch (error) {
+        ElMessage.error(error);
         console.log("登录失败, " + error);
     }
 

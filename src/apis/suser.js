@@ -14,3 +14,10 @@ export function loginService(userAccount, password){
     });
 }
 
+export function getUserInfoService(){
+    return service({
+        url: "/sysUser/getLoginIdentity", 
+        method: "get"
+    });
+}
+

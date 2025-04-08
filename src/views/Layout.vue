@@ -4,7 +4,7 @@
             <el-dropdown placement="bottom-end">
                 <span class="el-dropdown__box">
                     <div>
-                        <strong>当前用户：</strong>超级管理员
+                        <strong>当前用户：</strong> {{ loginUser.nickName }}
                     </div>
                     <!-- 图标 -->
                     <el-icon>
@@ -50,11 +50,24 @@
     </el-container>
 </template>
 <script setup>
+import { getUserInfoService } from '@/apis/suser';
 import {
     Management,
     ArrowDownBold,
     SwitchButton
 } from '@element-plus/icons-vue'
+import { reactive } from 'vue';
+
+const loginUser = reactive({
+    nickName: ''
+})
+
+async function getUserInfo(){
+    const userInfo = await getUserInfoService();
+    loginUser.nickName = userInfo.data.nickName;
+    console.log(userInfo.data.nickName);
+}
+getUserInfo();
 </script>
 <style lang="scss" scoped>
 .layout-container {

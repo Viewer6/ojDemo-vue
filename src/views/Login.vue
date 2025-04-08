@@ -40,7 +40,7 @@ const password = ref('');
 async function loginFun(){
     try {
         const loginResult = await loginService(userAccount.value, password.value);
-        // console.log("登录成功: " + loginResult.data);
+        console.log("登录成功: " + loginResult.data);
         setToken(loginResult.data);
         router.push("/oj/layout");
     }catch (error) {

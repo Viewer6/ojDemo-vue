@@ -1,5 +1,6 @@
 import axios from "axios"
 import { ElMessage } from "element-plus";
+import { getToken } from "./cookie";
 // import { el } from "element-plus/es/locale";
 
 const service = axios.create({
@@ -7,12 +8,28 @@ const service = axios.create({
     timeout:5000, 
 })
 
+// 请求拦截器
+service.interceptors.request.use(
+    (config) => {
+        if(getToken()){
+            console.log(getToken());
+            config.headers["Authorization"] = "Bearer " + getToken();
+        }
+        return config;
+    },
+    (error) => {
+        console.log(error);
+        Promise.reject(error);
+    }
+)
+
+// 响应拦截器
 service.interceptors.response.use(
     (res) => {
         const code = res.data.code;
         const msg = res.data.errMeg;
         if(code != 1000){
-            ElMessage.error(msg);
+            ElMessage.error(msg)
             return Promise.reject(new Error(msg));
         }else {
             return Promise.resolve(res.data);

@@ -1,6 +1,6 @@
 import axios from "axios"
 import router from '@/router';
-import { getToken } from "./cookie";
+import { getToken, removeToken } from "./cookie";
 // import { el } from "element-plus/es/locale";
 
 const service = axios.create({
@@ -28,7 +28,11 @@ service.interceptors.response.use(
     (res) => {
         const code = res.data.code;
         const msg = res.data.errMeg;
-        if(code != 1000){
+        if(code == 3001){
+            ElMessage.error(msg);
+            removeToken();
+            router.push('/oj/login')
+        } else if(code != 1000){
             ElMessage.error(msg)
             return Promise.reject(new Error(msg));
         }else {

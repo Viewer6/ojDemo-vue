@@ -32,7 +32,6 @@ import { ref } from 'vue';
 import { loginService } from '@/apis/suser';
 import router from '@/router';
 import { setToken } from '@/utils/cookie';
-import { ElMessage } from 'element-plus';
 
 const userAccount = ref('');
 const password = ref('');
@@ -44,7 +43,6 @@ async function loginFun(){
         setToken(loginResult.data);
         router.push("/oj/layout");
     }catch (error) {
-        ElMessage.error(error);
         console.log("登录失败, " + error);
     }
 

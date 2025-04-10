@@ -21,3 +21,10 @@ export function getUserInfoService(){
     });
 }
 
+export function logoutService(){
+    return service({
+        url: "/sysUser/logout", 
+        method: "delete"
+    });
+}
+

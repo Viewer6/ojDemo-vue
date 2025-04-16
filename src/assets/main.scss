@@ -1,0 +1,17 @@
+.el-table {
+    th{
+        background-color: #32C5FF !important;
+        color: #ffff;
+    }
+}
+
+.el-button--primary {
+    color: #32C5FF !important;
+}
+
+.el-button--text {
+    color: #32C5FF !important;
+    &.red span{
+        color: #FD4C40;
+    }
+}

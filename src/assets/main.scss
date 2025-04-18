@@ -15,3 +15,11 @@
         color: #FD4C40;
     }
 }
+
+.el-pagination {
+    margin-top: 20px;
+    justify-content: flex-end;
+    .el-pager li.is-active {
+        background-color: #32c5ff !important;
+    }
+}

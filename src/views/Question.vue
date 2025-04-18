@@ -33,32 +33,32 @@
             </template>
         </el-table-column>
     </el-table>
+    <div class="example-pagination-block">
+        <el-pagination size="large" layout="total, sizes, prev, pager, next, jumper" :total="total" :page-sizes="[5, 10, 15, 20]" />
+    </div>
 </template>
 <script setup>
 import { Plus } from "@element-plus/icons-vue"
 import Selector from "@/components/QuestionSelector.vue"
-import { reactive } from 'vue'
-const questionList = reactive([
-    {
-        questionId: '1',
-        title: '题⽬1',
-        difficulty: 1,
-        createName: '超级管理员',
-        createTime: '2024-05-30 17:00:00'
-    },
-    {
-        questionId: '2',
-        title: '题⽬2',
-        difficulty: 2,
-        createName: '超级管理员',
-        createTime: '2024-05-30 17:00:00'
-    },
-    {
-        questionId: '3',
-        title: '题⽬1',
-        difficulty: 3,
-        createName: '超级管理员',
-        createTime: '2024-05-30 17:00:00'
-    }
-])
+import { reactive, ref } from 'vue'
+import { getQuestionListService } from "@/apis/question"
+
+const params = reactive({
+    pageNum: 1,
+    pageSize: 12,
+    difficulty: "",
+    title: ""
+})
+
+const questionList = ref([]);
+const total = ref(0);
+
+async function getQuestionList() {
+    const result = await getQuestionListService(params);
+    console.log(result);
+    questionList.value = result.rows;
+    total.value = result.total;
+}
+getQuestionList();
+
 </script>

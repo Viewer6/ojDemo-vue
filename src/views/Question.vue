@@ -7,14 +7,14 @@
             <el-input placeholder="请您输入要搜索的题目标题" />
         </el-form-item>
         <el-form-item>
-            <el-button plain>搜索</el-button>
+            <el-button plain @Click="">搜索</el-button>
             <el-button plain type="info">重置</el-button>
             <el-button plain type="primary" :icon="Plus">添加题目</el-button>
         </el-form-item>
     </el-form>
     <el-table height="526px" :data="questionList">
         <el-table-column prop="questionId" width="180px" label="题⽬id" />
-        <el-table-column prop="title" label="题⽬标题" />
+        <el-table-column v-model="params.title" prop="title" label="题⽬标题" />
         <el-table-column prop="difficulty" label="题⽬难度" width="90px">
             <template #default="{ row }">
                 <div v-if="row.difficulty === 1" style="color:#3EC8FF;">简单</div>
@@ -34,7 +34,16 @@
         </el-table-column>
     </el-table>
     <div class="example-pagination-block">
-        <el-pagination size="large" layout="total, sizes, prev, pager, next, jumper" :total="total" :page-sizes="[5, 10, 15, 20]" />
+        <el-pagination 
+        size="large" 
+        layout="total, sizes, prev, pager, next, jumper" 
+        v-model:current-page="params.pageNum" 
+        v-model:page-size="params.pageSize"
+        :total="total" 
+        :page-sizes="[1, 5, 10, 15, 20]"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange" 
+        />
     </div>
 </template>
 <script setup>
@@ -45,7 +54,7 @@ import { getQuestionListService } from "@/apis/question"
 
 const params = reactive({
     pageNum: 1,
-    pageSize: 12,
+    pageSize: 10,
     difficulty: "",
     title: ""
 })
@@ -60,5 +69,20 @@ async function getQuestionList() {
     total.value = result.total;
 }
 getQuestionList();
+
+function handleSizeChange(newSize){
+    // params.pageSize = newSize;
+    params.pageNum = 1;
+    getQuestionList();
+}
+
+function handleCurrentChange(newPage){
+    // params.pageNum = newPage;
+    getQuestionList();
+}
+
+function onSearch(){
+    
+}
 
 </script>

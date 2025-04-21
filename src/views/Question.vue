@@ -1,20 +1,20 @@
 <template>
     <el-form inline="true">
         <el-form-item>
-            <selector placeholder="请选择题目难度" style="width: 200px;"></selector>
+            <selector v-model="params.difficulty" placeholder="请选择题目难度" style="width: 200px;"></selector>
         </el-form-item>
         <el-form-item>
-            <el-input placeholder="请您输入要搜索的题目标题" />
+            <el-input v-model="params.title" placeholder="请您输入要搜索的题目标题" />
         </el-form-item>
         <el-form-item>
-            <el-button plain @Click="">搜索</el-button>
-            <el-button plain type="info">重置</el-button>
+            <el-button plain @Click="onSearch">搜索</el-button>
+            <el-button plain type="info" @Click="onReset">重置</el-button>
             <el-button plain type="primary" :icon="Plus">添加题目</el-button>
         </el-form-item>
     </el-form>
     <el-table height="526px" :data="questionList">
         <el-table-column prop="questionId" width="180px" label="题⽬id" />
-        <el-table-column v-model="params.title" prop="title" label="题⽬标题" />
+        <el-table-column prop="title" label="题⽬标题" />
         <el-table-column prop="difficulty" label="题⽬难度" width="90px">
             <template #default="{ row }">
                 <div v-if="row.difficulty === 1" style="color:#3EC8FF;">简单</div>
@@ -82,7 +82,16 @@ function handleCurrentChange(newPage){
 }
 
 function onSearch(){
-    
+    params.pageNum = 1;
+    getQuestionList();
+}
+
+function onReset(){
+    params.pageNum = 1;
+    params.pageSize = 10;
+    params.difficulty = "";
+    params.title = "";
+    getQuestionList();
 }
 
 </script>

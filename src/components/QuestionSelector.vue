@@ -1,6 +1,6 @@
 <template>
     <el-select>
-        <el-option v-for="item in difficultyList" :label="item.difficultyName" />
+        <el-option v-for="item in difficultyList" :label="item.difficultyName" :value="item.difficulty"/>
     </el-select>
 </template>
 <script setup>

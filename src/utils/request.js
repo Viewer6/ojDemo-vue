@@ -3,6 +3,8 @@ import router from '@/router';
 import { getToken, removeToken } from "./cookie";
 // import { el } from "element-plus/es/locale";
 
+axios.defaults.headers["Content-Type"] = "application/json;charset=utf-8";
+
 const service = axios.create({
     baseURL: "/dev-api", 
     timeout:5000, 

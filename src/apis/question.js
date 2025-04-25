@@ -12,18 +12,17 @@ export function addQuestionService(params = {}) {
     return service({
         url: "/question/add", 
         method: "post",
-        
         data: params, 
     })
 }
 
 export function getQuestionDetailService(queryQuestionId) {
     return service({
-        url: "/question/getDetail", 
-        method: "get",
-        data: {queryQuestionId}, 
-    })
-}
+      url: "/question/getDetail",
+      method: "get",
+      params: { queryQuestionId },
+    });
+  }
 
 export function editQuestionService(params = {}) {
     return service({
@@ -37,6 +36,6 @@ export function deleteQuestionService(deleteQuestionId) {
     return service({
         url: "/question/delete", 
         method: "delete",
-        data: {deleteQuestionId}, 
+        params: { deleteQuestionId }, 
     })
 }

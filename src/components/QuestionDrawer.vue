@@ -62,6 +62,7 @@
   
   async function open(questionId) {
     visibleDrawer.value = true
+    console.log(questionId);
     for (const key in formQuestion) {
       if (formQuestion.hasOwnProperty(key)) {
         formQuestion[key] = '';

@@ -26,9 +26,9 @@
         <el-table-column prop="createTime" label="创建时间" width="180px" />
         <el-table-column label="操作" width="100px" fixed="right">
             <template #default="{ row }">
-                <el-button type="text" >编辑
+                <el-button type="text" @Click="onEdit(row.questionId)">编辑
                 </el-button>
-                <el-button type="text" class="red">删除
+                <el-button type="text" class="red" @Click="onDelete(row.questionId)">删除
                 </el-button>
             </template>
         </el-table-column>
@@ -52,7 +52,7 @@
 import { Plus } from "@element-plus/icons-vue"
 import Selector from "@/components/QuestionSelector.vue"
 import { reactive, ref } from 'vue'
-import { getQuestionListService } from "@/apis/question"
+import { getQuestionListService, deleteQuestionService } from "@/apis/question"
 import QuestionDrawer from "@/components/QuestionDrawer.vue"
 
 const params = reactive({
@@ -116,7 +116,7 @@ async function onEdit(questionId) {
 }
 
 async function onDelete(questionId) {
-  await delQuestionService(questionId)
+  await deleteQuestionService(questionId)
   params.pageNum = 1
   getQuestionList()
 }

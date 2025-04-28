@@ -114,7 +114,7 @@
 </template>
 
 <script setup>
-import { examAddService } from "@/apis/exam"
+import { examAddService, addExamQuestionService } from "@/apis/exam"
 import { getQuestionListService } from "@/apis/question"
 import Selector from "@/components/QuestionSelector.vue"
 import router from '@/router'
@@ -160,6 +160,73 @@ async function saveBaseInfo() {
         formExam.examId = addRes.data
     }
     ElMessage.success('基本信息保存成功')
+}
+
+// 题目分页
+const questionList = ref([])
+const total = ref(0)
+async function getQuestionList() {
+    const result = await getQuestionListService(params)
+    console.log(result)
+    questionList.value = result.rows
+    total.value = result.total
+}
+
+const dialogVisible = ref(false)
+function addQuestion() {
+    if (formExam.examId === null || formExam.examId === '') {
+        ElMessage.error('请先保存竞赛基本信息')
+    } else {
+        getQuestionList()
+        dialogVisible.value = true
+    }
+}
+
+function handleSizeChange() {
+    params.pageNum = 1
+    getQuestionList()
+}
+
+function handleCurrentChange() {
+    getQuestionList()
+}
+
+
+function onSearch() {
+    params.pageNum = 1
+    getQuestionList()
+}
+
+function onReset() {
+    params.pageNum = 1
+    params.pageSize = 10
+    params.title = ''
+    params.difficulty = ''
+    getQuestionList()
+}
+
+const questionIdSet = ref([])
+
+function handleRowSelect(selection) {
+  questionIdSet.value = []
+  selection.forEach(element => {
+    questionIdSet.value.push(element.questionId)
+  });
+}
+
+async function submitSelectQuestion() {
+  if (questionIdSet.value && questionIdSet.value.length < 1) {
+    ElMessage.error('请先选择要提交的题目')
+    return false
+  }
+  const examQ = reactive({
+    examId: formExam.examId,
+    questionIdSet: questionIdSet.value
+  })
+  console.log(examQ)
+  await addExamQuestionService(examQ);
+  dialogVisible.value = false
+  ElMessage.success('竞赛题目添加成功')
 }
 
 </script>

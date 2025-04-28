@@ -139,4 +139,8 @@ function onAddExam() {
   router.push("/oj/layout/updateExam?type=add")
 }
 
+async function onEdit(examId) {
+  router.push(`/oj/layout/updateExam?type=edit&examId=${examId}`)
+}
+
 </script>

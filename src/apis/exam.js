@@ -24,5 +24,12 @@ export function addExamQuestionService(params = {}) {
   });
 }
 
+export function getExamDetailService(examId) {
+  return service({
+    url: "/exam/detail",
+    method: "get",
+    params: { examId },
+  });
+}
 
 

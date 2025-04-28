@@ -106,15 +106,15 @@
 
             <!-- 提交任务区域 -->
             <div class="submit-box absolute">
-                <el-button type="info" plain>取消</el-button>
-                <el-button type="primary" plain>发布竞赛</el-button>
+                <el-button type="info" plain @click="goBack">取消</el-button>
+                <el-button type="primary" plain >发布竞赛</el-button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { examAddService, addExamQuestionService } from "@/apis/exam"
+import { examAddService, addExamQuestionService, getExamDetailService } from "@/apis/exam"
 import { getQuestionListService } from "@/apis/question"
 import Selector from "@/components/QuestionSelector.vue"
 import router from '@/router'
@@ -225,8 +225,26 @@ async function submitSelectQuestion() {
   })
   console.log(examQ)
   await addExamQuestionService(examQ);
-  dialogVisible.value = false
-  ElMessage.success('竞赛题目添加成功')
+  getExamDetailById(formExam.examId);
+  dialogVisible.value = false;
+  ElMessage.success('竞赛题目添加成功');
+}
+
+async function getExamDetail() {
+  const examId = useRoute().query.examId
+  if (examId) {
+    formExam.examId = examId
+    getExamDetailById(examId)
+  }
+}
+getExamDetail()
+
+
+async function getExamDetailById(examId) {
+  const examDetail = await getExamDetailService(examId)
+  formExam.examQuestionList = []
+  Object.assign(formExam, examDetail.data)
+  formExam.examDate = [examDetail.data.startTime, examDetail.data.endTime]
 }
 
 </script>

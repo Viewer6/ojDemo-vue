@@ -6,8 +6,8 @@ const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
-            path: '/oj/login', 
-            name: 'login', 
+            path: '/oj/login',
+            name: 'login',
             component: () => import('@/views/Login.vue')
         },
         {
@@ -15,8 +15,8 @@ const router = createRouter({
             redirect: '/oj/login',
         },
         {
-            path: '/oj/layout', 
-            name: 'layout', 
+            path: '/oj/layout',
+            name: 'layout',
             component: () => import('@/views/Layout.vue'),
             children: [
                 {
@@ -30,6 +30,11 @@ const router = createRouter({
                     component: () => import('@/views/Exam.vue')
                 },
                 {
+                    path: 'updateExam',
+                    name: 'updateExam',
+                    component: () => import('@/views/UpdateExam.vue')
+                },
+                {
                     path: 'cuser',
                     name: 'cuser',
                     component: () => import('@/views/Cuser.vue')
@@ -40,16 +45,16 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    if(getToken()){
-        if(to.path === '/oj/login') {
-            next({path: '/oj/layout'})
-        }else {
+    if (getToken()) {
+        if (to.path === '/oj/login') {
+            next({ path: '/oj/layout' })
+        } else {
             next()
         }
     } else {
-        if(to.path !== '/oj/login') {
+        if (to.path !== '/oj/login') {
             next({
-                path:'/oj/login'
+                path: '/oj/login'
             })
         } else {
             next()

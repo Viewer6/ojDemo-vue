@@ -92,7 +92,7 @@ async function getExamList() {
     if (datetimeRange.value[1] instanceof Date) {
         params.endTime = formatDateTime(datetimeRange.value[1])
     }
-    
+
     const result = await getExamListService(params)
     examList.value = result.rows
     total.value = result.total
@@ -132,6 +132,11 @@ function onReset() {
   params.endTime = ''
   datetimeRange.value.length = 0
   getExamList()
+}
+
+function onAddExam() {
+  //跳转到新的页面上   
+  router.push("/oj/layout/updateExam?type=add")
 }
 
 </script>

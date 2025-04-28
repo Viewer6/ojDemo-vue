@@ -7,3 +7,12 @@ export function getExamListService(params){
         params: params
     });
 }
+
+export function examAddService(params = {}) {
+    return service({
+      url: "/exam/add",
+      method: "post",
+      data: params,
+    });
+  }
+  

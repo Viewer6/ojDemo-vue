@@ -41,7 +41,7 @@
                 <el-button class="exam-add-question" :icon="Plus" type="text" @click="addQuestion()">
                     添加题目
                 </el-button>
-                <el-table height="136px" :data="formExam.examQuestionList" class="question-select-list">
+                <el-table height="500px" :data="formExam.examQuestionList" class="question-select-list">
                     <el-table-column prop="questionId" width="180px" label="题目id" />
                     <el-table-column prop="title" :show-overflow-tooltip="true" label="题目标题" />
                     <el-table-column prop="difficulty" width="80px" label="题目难度">
@@ -107,14 +107,14 @@
             <!-- 提交任务区域 -->
             <div class="submit-box absolute">
                 <el-button type="info" plain @click="goBack">取消</el-button>
-                <el-button type="primary" plain >发布竞赛</el-button>
+                <el-button type="primary" plain @click="publishExam()" >发布竞赛</el-button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { examAddService, addExamQuestionService, getExamDetailService } from "@/apis/exam"
+import { examAddService, addExamQuestionService, getExamDetailService, deleteExamQuestionService, editExamService, publishExamService } from "@/apis/exam"
 import { getQuestionListService } from "@/apis/question"
 import Selector from "@/components/QuestionSelector.vue"
 import router from '@/router'
@@ -133,9 +133,11 @@ const params = reactive({
     pageNum: 1,
     pageSize: 10,
     difficulty: '',
-    title: ''
+    title: '', 
+    filterQuestionIdsStr: ''
 })
 
+const questionIds = ref([]);
 
 // 返回
 function goBack() {
@@ -166,6 +168,10 @@ async function saveBaseInfo() {
 const questionList = ref([])
 const total = ref(0)
 async function getQuestionList() {
+    params.filterQuestionIdsStr = ref(questionIds.value.join(";"))
+
+    console.log(params.filterQuestionIdsStr)
+
     const result = await getQuestionListService(params)
     console.log(result)
     questionList.value = result.rows
@@ -245,6 +251,23 @@ async function getExamDetailById(examId) {
   formExam.examQuestionList = []
   Object.assign(formExam, examDetail.data)
   formExam.examDate = [examDetail.data.startTime, examDetail.data.endTime]
+  questionIds.value = []
+  questionIds.value = examDetail.data.examQuestionList.map(q => q.questionId)
+
+  console.log(questionIds)
+  
+}
+
+async function deleteExamQuestion(examId, questionId){
+    await deleteExamQuestionService(examId, questionId);
+    getExamDetailById(examId)
+    ElMessage.success('竞赛题目删除成功')
+}
+
+async function publishExam() {
+    await publishExamService(formExam.examId);
+    router.push(`/oj/layout/Exam`)
+    ElMessage.success("发布竞赛成功");
 }
 
 </script>

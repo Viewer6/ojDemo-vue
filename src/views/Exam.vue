@@ -44,8 +44,7 @@
             <template #default="{ row }">
                 <el-button v-if="isNotStartExam(row) && row.status == 0" type="text" @click="onEdit(row.examId)">编辑
                 </el-button>
-                <el-button v-if="isNotStartExam(row) && row.status == 0" type="text" @click="onDelete(row.examId)"
-                    class="red">删除
+                <el-button v-if="isNotStartExam(row) && row.status == 0" type="text" @click="onDelete(row.examId)" class="red">删除
                 </el-button>
                 <el-button v-if="row.status == 1 && isNotStartExam(row)" type="text"
                     @click="cancelPublishExam(row.examId)">撤销发布</el-button>
@@ -63,9 +62,10 @@
 
 <script setup>
 import { Plus } from '@element-plus/icons-vue'
-import { getExamListService } from '@/apis/exam'
+import { deleteExamService, getExamListService, publishExamService, cancelPublishExamService } from '@/apis/exam'
 import { reactive, ref } from 'vue'
 import router from '@/router'
+import { ElMessage } from 'element-plus';
 
 function isNotStartExam(exam) {
     const now = new Date(); //当前时间
@@ -134,13 +134,31 @@ function onReset() {
   getExamList()
 }
 
-function onAddExam() {
+async function onAddExam() {
   //跳转到新的页面上   
   router.push("/oj/layout/updateExam?type=add")
 }
 
 async function onEdit(examId) {
   router.push(`/oj/layout/updateExam?type=edit&examId=${examId}`)
+}
+
+async function onDelete(examId) {
+    await deleteExamService(examId);
+    getExamList();
+    ElMessage.success("竞赛删除成功");
+}
+
+async function publishExam(examId) {
+    await publishExamService(examId);
+    getExamList();
+    ElMessage.success("发布竞赛成功");
+}
+
+async function cancelPublishExam(examId) {
+    await cancelPublishExamService(examId);
+    getExamList();
+    ElMessage.success("撤销发布竞赛成功");
 }
 
 </script>
